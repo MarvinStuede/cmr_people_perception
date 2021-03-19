@@ -1,0 +1,17 @@
+# Set your detection topic here
+detection_topic: "/object_detection/detections"
+
+# Set your camera topic here 
+camera_topic: "/cam_front/color/image_raw_throttle"
+
+# Set your output topic here
+output_topic: "/face_recognizer/faces"
+
+# Set your output topic for RGB Image here
+output_topic_rgb: "/face_recognizer/faces/image"
+
+train_path: '/home/alex/bilder/face_reco_pics'
+
+train: true
+
+test: False

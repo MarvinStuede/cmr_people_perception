@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <group ns="/tensorflow_front">
+
+  <!--node name="tensorflow_rgbd_front" pkg="cob_people_object_detection_tensorflow" type="cob_people_object_detection_tensorflow.py" output="screen">
+    <rosparam command="load" file="$(find cmr_people_perception)/params/tensorflow_rgbd_front_params.yaml"/>
+  </node-->
+
+  <node name="projection_front" pkg="cob_people_object_detection_tensorflow" type="projection.py" output="screen">
+    <rosparam command="load" file="$(find cmr_people_perception)/params/projection_front_params.yaml"/>
+  </node>
+
+    </group>
+
+
+</launch>

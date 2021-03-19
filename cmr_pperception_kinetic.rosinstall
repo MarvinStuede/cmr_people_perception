@@ -1,0 +1,14 @@
+### ADDITIONAL LIBRARIES ###
+# Darknet ROS Fork with CPU usage fix. Decreases from 200% to around 100%
+# Additional fix can decrease CPU load further, by introducing a waiting time
+- git: {local-name: darknet_ros, uri: 'https://github.com/MarvinStuede/darknet_ros.git'}
+
+# Spencer People tracking
+# Forked, with additional launch files for Velodyne detectors
+- git: {local-name: spencer_people_tracking, uri: 'https://github.com/MarvinStuede/spencer_people_tracking.git', version: kinetic}
+
+- git: {local-name: depth_clustering, uri: 'https://github.com/PRBonn/depth_clustering', version: 57ca59ddf04d40dd761cb550e65c30d497c647e7}
+
+### CMR Repositories ###
+# cmr_os
+- git: {local-name: cmr_os, uri: 'git@gitlab.projekt.uni-hannover.de:imes-projekt-cmg_roboter/cmr-code/cmr_os.git', version: master}

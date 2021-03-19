@@ -1,0 +1,23 @@
+# Set your depth image topic here, default is for openni2
+depth_topic: "/cam_front/aligned_depth_to_color/image_rect_relay"
+
+# Set your face detection topic here
+face_topic: "/darknet_ros/bounding_boxes"
+
+# Set your output topic here
+output_topic: "/object_detection/position"
+
+output_topic_spencer: '/spencer/perception_internal/detected_persons/rgbd_front_top/upper_body'
+
+# Set your depth focal length
+focal_length: 615.1769409179688
+
+# cx of depth camera
+cx: 326.2182312011719
+
+# cy for depth camera
+cy: 236.27191162109375
+
+detection_id_increment: 20
+
+detection_id_offset: 3

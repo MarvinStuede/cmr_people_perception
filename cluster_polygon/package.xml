@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>cluster_polygon</name>
+  <version>0.1.0</version>
+  <description>cluster_polygon</description>
+
+  <maintainer email="alex.peter91@gmail.com">Alexander Petersen</maintainer>
+  <license>GPLv3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>geometry_msgs</depend>
+ <depend>visualization_msgs</depend>
+  <depend>interactive_markers</depend>
+  <depend>roslib</depend>
+    <depend>sg_msgs</depend>
+
+</package>

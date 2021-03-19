@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<launch>
+  <node name="face_image_throttle" pkg="topic_tools" type="throttle" args= "messages /cam_front/color/image_raw 4.0">
+  </node>
+  
+  <node name="cob_face_recognizer" pkg="face_reco" type="face_knn.py" output="screen">
+    <rosparam command="load" file="$(find cmr_people_perception)/params/face_knn_params.yaml"/>
+  </node>
+</launch>

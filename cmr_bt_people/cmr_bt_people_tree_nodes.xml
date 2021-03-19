@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<root>
+  <TreeNodesModel>
+    <!-- ############################### ACTION NODES ################################# -->
+
+
+    <!-- ############################### CONDITION NODES ############################## -->
+
+    <Condition ID="PersonClose">
+      <input_port name="distance">Threshold distance. Person with smaller distance will be regarded as close</input_port>
+    </Condition>
+
+
+
+    <!-- ############################### CONTROL NODES ################################ -->
+
+
+    <!-- ############################### DECORATOR NODES ############################## -->
+
+  </TreeNodesModel>
+</root>

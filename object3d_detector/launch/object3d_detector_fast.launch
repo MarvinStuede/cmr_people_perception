@@ -1,0 +1,22 @@
+<launch>
+ 
+  <!-- Throttling -->
+ <node name="object3d_detector_fast_throttle" pkg="topic_tools" type="throttle" args= "messages /velodyne_points 6.0 /velodyne_points_fast_throttle">
+</node>
+
+ <!-- Clustering -->
+<node name="depth_clustering_fast" pkg="depth_clustering" type="save_clusters_node" output="screen">
+</node>
+
+  <!-- 3D Object Detector Fast -->
+  <node pkg="object3d_detector" type="object3d_detector_fast" name="object3d_detector_fast" output="screen" respawn="false">
+    <param name="model_file_name" type="string" value="$(find object3d_detector)/libsvm/pedestrian_test_multi_fast_21_09.model"/>
+    <param name="range_file_name" type="string" value="$(find object3d_detector)/libsvm/range_test_multi_fast_21_09"/>
+    <param name="human_size_limit" type="bool" value="true"/>
+  </node>
+  
+  <!-- ROS Visualization 
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find object3d_detector)/launch/object3d_detector.rviz"/>
+
+-->
+</launch>

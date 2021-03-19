@@ -1,0 +1,18 @@
+<launch>
+
+ <!-- Throttling Pointcloud -->
+ <node name="object3d_detector_throttle" pkg="topic_tools" type="throttle" args= "messages /velodyne_points 3.0">
+</node>
+
+  <!-- 3D Object Detector -->
+  <node pkg="object3d_detector" type="object3d_detector" name="object3d_detector" output="screen" respawn="false">
+    <param name="model_file_name" type="string" value="$(find object3d_detector)/libsvm/pedestrian_test_multi_new_21_09.model"/>
+    <param name="range_file_name" type="string" value="$(find object3d_detector)/libsvm/range_test_multi_new_21_09"/>
+  </node>
+  
+
+  <!-- ROS Visualization 
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find object3d_detector)/launch/object3d_detector.rviz"/>
+
+-->
+</launch>

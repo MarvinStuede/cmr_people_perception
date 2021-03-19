@@ -1,0 +1,4 @@
+# Duration in seconds before resetting to normal expression
+float32 duration
+---
+

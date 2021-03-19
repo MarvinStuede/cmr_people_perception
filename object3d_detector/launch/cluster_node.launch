@@ -1,0 +1,5 @@
+<launch>
+  <!-- Cluster-Node-->
+  <node pkg="object3d_detector" type="cluster_node" name="cluster_node" output="screen" respawn="false">
+  </node>
+</launch>

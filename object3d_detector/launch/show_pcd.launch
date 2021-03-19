@@ -1,0 +1,9 @@
+<launch>
+  <node pkg="object3d_detector" type="show_pcd" name="show_pcd" output="screen">
+  <!--param name="/show_pcd/save_path" value="/home/alex/human1_sort/"/-->
+  <param name="/show_pcd/save_name" value="human"/>
+  <param name="/show_pcd/delete" value="true"/>
+    <param name="/show_pcd/wait" value="0.0"/>
+  </node>
+</launch>
+

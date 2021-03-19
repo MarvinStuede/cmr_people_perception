@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<launch>
+
+
+	<node name="cluster_polygon" pkg="cluster_polygon" type="cluster_polygon" output="screen" />
+
+
+        <node name="tf_map" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link map 100" output="screen" />
+
+        <node name="tf_base_link_rt" pkg="tf" type="static_transform_publisher" args="0 0 0 0 -1.57 0 base_link base_link_r 100" output="screen" />
+
+        <node name="tf_bla" pkg="tf" type="static_transform_publisher" args="0.049 0.085 -1.274 1.047 0.0 0.0 bla blu 100" output="screen" />
+
+       <node name="map_server_cluster" pkg="map_server" type="map_server" args="$(find cluster_polygon)/maps/map.yaml"/>
+</launch>

@@ -1,0 +1,8 @@
+<launch>
+
+	<node pkg="guiding_utils" type="message_republisher" respawn="false" name="message_republisher" output="screen" >
+
+               <remap from="/spencer/perception/tracked_persons" to="/pedsim_visualizer/tracked_persons"/>
+	</node>
+
+</launch>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>cmr_people_perception</name>
+  <version>0.0.0</version>
+  <description>cmr_people_perception</description>
+  <maintainer email="petersen@stud.uni-hannover.de">Petersen</maintainer>
+  <license>BSD</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>spencer_tracking_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  
+
+  <run_depend>timed_roslaunch</run_depend> 
+  <run_depend>roscpp</run_depend>
+  
+
+</package>

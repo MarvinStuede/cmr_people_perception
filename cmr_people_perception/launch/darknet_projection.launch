@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="node_name" default="darknet_projection"/>
+    <arg name="ros_param_file" default="$(find cmr_people_perception)/params/darknet_projection_front_params.yaml"/>
+    <group ns="/darknet">
+
+    <node name="$(arg node_name)" pkg="guiding_utils" type="projection_darknet.py" output="screen">
+     <rosparam command="load" file="$(arg ros_param_file)"/>
+    </node>
+
+    </group>
+</launch>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<launch>
+    
+	<arg name="use_upper_body_detector" default="true"/> <!-- use depth-template-based upper-body detector? -->
+    <arg name="use_pcl_detector" default="false"/> <!-- use ROI-HOG detector from PCL library? cannot be used with upper-body detector at the same time! -->
+    <arg name="use_hog_detector" default="true"/> <!-- use RGB groundHOG detector? Requires cudaHOG library-->
+    <arg name="use_tensorflow" default="false"/> <!-- use tensorflow upperbody detector-->
+    <arg name="use_static_map_filter" default="true"/>  <!-- filtering with map-->
+    <arg name="visualization" default="false"/>
+    <arg name="rviz_config_file" default="$(find spencer_people_tracking_launch)/rviz/tracking-rgbd-laser.rviz"/>
+  <!-- Shutdown people perception -->
+    <node pkg="cmr_os" type="shutdown_node" name="people_perception_shutdown" required="true"/>
+
+<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_config_file)" required="false" if="$(arg visualization)"/>
+
+<!--*********3D Object Detector 6 Features*************-->
+<!--<node name="object3d_detector_throttle" pkg="topic_tools" type="throttle" args= "messages /velodyne_points 3.0">
+</node> --> 
+   <!--3D Object Detector-->
+   <!--<node pkg="object3d_detector" type="object3d_detector" name="object3d_detector" output="screen" respawn="false">
+    <param name="model_file_name" type="string" value="$(find object3d_detector)/libsvm/pedestrian_test_multi_new_21_09.model"/>
+    <param name="range_file_name" type="string" value="$(find object3d_detector)/libsvm/range_test_multi_new_21_09"/>
+    <param name="human_probability" type="double" value="0.6"/>
+  </node> -->
+
+	
+<!--*********3D Object Detector 5 Features**********-->
+ <!--node name="object3d_detector_fast_throttle" pkg="topic_tools" type="throttle" args= "messages /velodyne_points 6.0 /velodyne_points_fast_throttle">
+</node-->
+ <node name="depth_clustering_fast" pkg="depth_clustering" type="save_clusters_node">
+ </node>
+
+ <!--<node pkg="depth_clustering" type="save_clusters_node" name="save_clusters_node" args="- -num_beams 16"/>-->
+   <!--3D Object Detector Fast-->
+  <node pkg="object3d_detector" type="object3d_detector_fast" name="object3d_detector_fast" output="screen" respawn="false">
+    <param name="model_file_name" type="string" value="$(find object3d_detector)/libsvm/pedestrian_test_multi_fast_21_09.model"/>
+    <param name="range_file_name" type="string" value="$(find object3d_detector)/libsvm/range_test_multi_fast_21_09"/>
+    <param name="human_size_limit" type="bool" value="true"/>
+    <param name="human_probability" type="double" value="0.6"/>
+  </node>
+
+     
+<!--*********YOLO Front**********-->
+     <!-- node name="cam_throttle" pkg="topic_tools" type="throttle" args= "messages /cam_front/color/image_raw 15.0">
+</node-->   
+   <!-- Darknet-->
+    <include file="$(find cmr_people_perception)/launch/darknet_ros.launch">
+        <arg name="node_name" value="darknet_ros_front"/>
+    	<arg name="ros_param_file" value="$(find cmr_people_perception)/params/darknet_ros_front.yaml"/> 
+    </include> 
+    <!-- RGB-D detectors-->
+    <include file="$(find cmr_people_perception)/launch/darknet_projection.launch">
+	<arg name="node_name" value="darknet_projection_front"/>
+	<arg name="ros_param_file" value="$(find cmr_people_perception)/params/darknet_projection_front_params.yaml"/>
+    </include> 
+
+<!--*********YOLO Back**********-->
+<!--node name="cam_throttle_back" pkg="topic_tools" type="throttle" args= "messages /cam_back_rotated/color/image_raw 15.0">
+</node-->
+    <!-- Darknet-->
+    <!--<include file="$(find cmr_people_perception)/launch/darknet_ros.launch">
+        <arg name="node_name" value="darknet_ros_back"/>
+    	<arg name="ros_param_file" value="$(find cmr_people_perception)/params/darknet_ros_back.yaml"/> 
+</include>--> 
+
+    <!-- RGB-D detectors -->
+    <!--<include file="$(find cmr_people_perception)/launch/darknet_projection.launch">
+	<arg name="node_name" value="darknet_projection_back"/>
+	<arg name="ros_param_file" value="$(find cmr_people_perception)/params/darknet_projection_back_params.yaml"/>
+</include>--> 
+
+
+<!--********* Spencer Upperbody, PCL, GroundHOG, Tensorflow FRONT**********-->
+    <!-- RGB-D detectors 
+    <include file="$(find spencer_people_tracking_launch)/launch/detectors/front_rgbd_detectors.launch">
+        <arg name="upper_body" value="$(arg use_upper_body_detector)"/>
+        <arg name="pcl_detector" value="$(arg use_pcl_detector)"/>
+        <arg name="hog" value="$(arg use_hog_detector)"/>
+        <arg name="tensorflow" value="$(arg use_tensorflow)"/>
+    </include>-->
+
+<!--********* Spencer Upperbody, PCL, GroundHOG, Tensorflow BACK**********-->
+ <!-- RGB-D detectors  
+    <include file="$(find spencer_people_tracking_launch)/launch/detectors/rear_rgbd_detectors.launch">
+        <arg name="upper_body" value="$(arg use_upper_body_detector)"/>
+        <arg name="pcl_detector" value="$(arg use_pcl_detector)"/>
+        <arg name="hog" value="$(arg use_hog_detector)"/>
+        <arg name="tensorflow" value="$(arg use_tensorflow)"/>
+    </include>
+-->
+
+<!--********* ROS Leg-Detektor **********-->
+    <!-- Laser detectors 30 hz
+    <include file="$(find leg_detector)/launch/leg_detector.launch"/> 
+    <include file="$(find detector_msg_to_pose_array)/launch/to_pose_array.launch"/> 
+-->
+
+<!--********* Spencer Leg-Detektor **********-->
+    <!-- Laser detectors 
+    <include file="$(find spencer_people_tracking_launch)/launch/detectors/laser_detectors.launch"/> 
+-->
+
+<!--********* Spencer-ROS Leg-Detektor **********-->
+<!--
+     <include file="$(find spencer_leg_detector_wrapper)/launch/leg_detector.launch"/>
+-->
+
+<!--*******Fusion**********-->
+ <node name="fuse_all" pkg="guiding_utils" type="detection_com">
+</node> 
+
+<!-- **********People Tracking********** -->
+    <include file="$(find spencer_people_tracking_launch)/launch/tracking/freiburg_people_tracking.launch">
+        <arg name="rgbd" default="true"/>
+        <arg name="laser_low_confidence_detections" default="true"/>
+        <arg name="static_map_filter" value="$(arg use_static_map_filter)"/>
+    </include>
+
+
+<!--************* Group tracking ***********-->
+   <!-- <include file="$(find spencer_people_tracking_launch)/launch/tracking/group_tracking.launch"/> -->
+ <node name="tf_base_footprint" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link base_footprint 10"/>
+
+</launch>

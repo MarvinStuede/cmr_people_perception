@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--						*
+/**
+ * @file   people_perception.test
+ * @author Marvin Stüde (Marvin.Stuede@imes.uni-hannover.de)
+ * @date   10/2020
+ *
+ * @brief  Does publish and HZ tests for People Perception pipeline
+ */
+-->
+
+<launch>
+    <env name="ROSCONSOLE_FORMAT" value="[${severity}] [${time}] ${logger}: ${message}"/>
+   <param name="use_sim_time" type="bool" value="true" />
+
+   <include file="$(find timed_roslaunch)/launch/timed_roslaunch.launch">
+    <arg name="time" value="5" />
+    <arg name="pkg" value="cmr_driver" />
+    <arg name="file" value="bag_play.launch" />
+    <arg name="value" value="file:=$(find cmr_people_perception)/test/cmg_people_labor.bag rate:=0.5" />
+  </include>
+
+
+  <include file="$(find cmr_people_perception)/launch/people_perception.launch" />
+  <test test-name="publishtest_darknet" pkg="rostest" type="publishtest">
+  <rosparam>
+    topics:
+      - name: /darknet_ros/bounding_boxes
+        timeout: 60
+        negative: False
+      - name: /darknet_ros/detection_image
+        timeout: 60
+        negative: False
+  </rosparam>
+  </test>
+  <test test-name="publishtest_pre" pkg="rostest" type="publishtest">
+  <rosparam>
+    topics:
+      - name: /spencer/perception_internal/detected_persons/pre/rgbd_front_top/upper_body
+        timeout: 60
+        negative: False
+      - name: /spencer/perception_internal/detected_persons/pre/velodyne
+        timeout: 60
+        negative: False
+      - name: /spencer/perception_internal/detected_persons/pre/velodyne_fast
+        timeout: 60
+        negative: False
+  </rosparam>
+  </test>
+  <test test-name="publishtest_fused" pkg="rostest" type="publishtest">
+  <rosparam>
+    topics:
+      - name: /spencer/perception_internal/detected_persons/rgbd_front_top/upper_body
+        timeout: 60
+        negative: False
+      - name: /spencer/perception_internal/detected_persons/velodyne
+        timeout: 60
+        negative: False
+  </rosparam>
+  </test>
+  <test test-name="test_people_perception" pkg="cmr_people_perception" type="test_people_perception" time-limit="180.0"/>
+</launch>

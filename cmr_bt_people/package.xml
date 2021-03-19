@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>cmr_bt_people</name>
+  <version>0.0.0</version>
+  <description>cmr_bt_people</description>
+  <maintainer email="Marvin.Stuede@imes.uni-hannover.de">Marvin Stuede</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>spencer_tracking_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>cmr_os</depend>
+  <depend>cmr_bt_generic</depend>
+  <depend>behaviortree_cpp_v3</depend>
+  <depend>tf</depend>
+
+</package>

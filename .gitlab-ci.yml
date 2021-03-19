@@ -1,0 +1,43 @@
+image: osrf/ros:kinetic-desktop-full-xenial
+
+variables:
+  WSTOOL_RECURSIVE: "true"
+  ROS_PACKAGES_TO_INSTALL: "spencer-tracking-msgs bayes-tracking"
+  PKGS: 'cmr_people_perception'
+
+before_script:
+ - echo "Adding SSH key..."
+ - curl -s http://lcas.lincoln.ac.uk/repos/public.key | apt-key add -
+ - apt-get update -y && apt-get install openssh-client software-properties-common wget libproj-dev -y
+ - apt-add-repository http://lcas.lincoln.ac.uk/ubuntu/main
+ - apt-get update -y
+ - apt-get install -y ros-$ROS_DISTRO-spencer-tracking-msgs ros-$ROS_DISTRO-bayes-tracking
+ - eval $(ssh-agent -s)
+ - mkdir -p ~/.ssh
+ - chmod 700 ~/.ssh
+ - touch ~/.ssh/known_hosts
+ - chmod 600 ~/.ssh/known_hosts
+ - echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+ - ssh-keyscan gitlab.projekt.uni-hannover.de | tee -a ~/.ssh/known_hosts
+ - git clone https://gitlab.com/VictorLamoine/ros_gitlab_ci.git
+ - source ros_gitlab_ci/gitlab-ci.bash >/dev/null
+ - cd ${CI_PROJECT_DIR}/catkin_workspace
+ - source src/cmr_people_perception/cmr_people_perception/scripts/install_dependencies.sh
+
+cache:
+  paths:
+    - ccache/
+
+catkin_tools:
+  stage: build
+  script:
+    - catkin build --summarize --no-status --force-color
+catkin tools_tests:
+  stage: test
+  script:
+    - catkin build --force-color --cmake-args -DDOWNLOAD_BAG_DATA=true
+      #- catkin build $PKGS -DCATKIN_ENABLE_TESTING=true
+    - catkin build --verbose --force-color $PKGS --no-deps --catkin-make-args run_tests
+    - source devel/setup.bash
+    - rostest --text cmr_people_perception people_perception.test 
+    - catkin_test_results # Check if one of the tests failed!

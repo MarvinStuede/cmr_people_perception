@@ -1,0 +1,23 @@
+# Set your depth image topic here, default is for openni2
+depth_topic: "/cam_back_rotated/velodyne_depth"
+
+# Set your face detection topic here
+face_topic: "/tensorflow_back/object_detection/detections"
+
+# Set your output topic here
+output_topic: "/object_detection/position"
+
+output_topic_spencer: '/spencer/perception_internal/detected_persons/rgbd_rear_top/upper_body'
+
+# Set your depth focal length
+focal_length: 616.7244262695312
+
+# cx of depth camera
+cx: 242.41610717773438
+
+# cy for depth camera
+cy: 324.0523986816406
+
+detection_id_increment: 20
+
+detection_id_offset: 5

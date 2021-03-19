@@ -1,0 +1,5 @@
+string question
+---
+bool known_question
+string answer
+
